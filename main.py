@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.use(mid)
+
 # Event handlers para conexão com MongoDB
 @app.on_event("shutdown")
 async def shutdown_db_client():
