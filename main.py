@@ -1,28 +1,31 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from routers import userRouter
 from schemas import userSchema
-import pymongo
-from pymongo import MongoClient
-from pymongo.errors import ServerSelectionTimeoutError
+from database import close_mongo_connection
+
 
 app = FastAPI()
 
+origins = [
+    "http://localhost"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.use(mid)
+# Event handlers para conexão com MongoDB
+@app.on_event("shutdown")
+async def shutdown_db_client():
+    await close_mongo_connection()
+
 #para rodar o código use o comando: uvicorn main:app --reload
 
-try:
-    client = MongoClient("mongodb://localhost:27017", serverSelectionTimeoutMS=5000)
-    # Verifica a conexão
-    client.admin.command('ping')
-    print("Conectado ao MongoDB com sucesso!")
-    db = client['seu_banco_dados']  # Substitua pelo nome do seu banco
-except ServerSelectionTimeoutError:
-    print("Erro: Não foi possível conectar ao MongoDB")
-    client = None
-except Exception as e:
-    print(f"Erro na conexão: {e}")
-    client = None
-
-
-app.include_router(userRouter, prefix='/api/user')
+app.include_router(userRouter.router)
 
 

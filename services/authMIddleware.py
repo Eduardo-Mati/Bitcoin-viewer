@@ -1,0 +1,48 @@
+from fastapi import HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthCredentials
+from jwt import encode, decode, ExpiredSignatureError, InvalidTokenError
+from datetime import datetime, timedelta
+from typing import Optional
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+# Esquema de segurança
+security = HTTPBearer()
+
+# Constants
+SECRET = os.getenv("SECRET")
+ALGORITHM = "HS256"
+SECRET_KEY = os.getenv("SECRET")
+
+# Função para criar token JWT
+def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
+    """Cria um token JWT"""
+    to_encode = data.copy()
+    
+    if expires_delta:
+        expire = datetime.utcnow() + expires_delta
+    else:
+        expire = datetime.utcnow() + timedelta(minutes=60)
+    
+    to_encode.update({"exp": expire})
+    encoded_jwt = encode(to_encode, SECRET, algorithm=ALGORITHM)
+    return encoded_jwt
+
+# Função para verificar token JWT
+def verify_token(credentials: HTTPAuthCredentials = Depends(security)):
+    """Verifica se o token JWT é válido"""
+    token = credentials.credentials
+    
+    try:
+        payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return email
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expirado")
+    except InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Token inválido")
+

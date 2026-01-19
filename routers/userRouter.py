@@ -1,28 +1,29 @@
-from flask import Blueprint
+from fastapi import APIRouter
 from controllers import userController
+from schemas.userSchema import user
 
-router = Blueprint('users', __name__)
+router = APIRouter(prefix="/api/user", tags=["user"])
 
-@router.route('/<id>', methods=['DELETE'])
-def delete_one(id):
-	return userController.deleteOne(id)
+@router.delete('/{email}')
+async def delete_one(email: str):
+	return await userController.deleteOne(email)
 
-@router.route('/<id>', methods=['GET'])
-def get_one(id):
-	return userController.getOne(id)
+@router.get('/{email}')
+async def get_one(email: str):
+	return await userController.getOne(email)
 
-@router.route('/<id>', methods=['PUT'])
-def update_one(id):
-	return userController.updateOne(id)
+@router.put('/{email}')
+async def update_one(email: str, user_data: user):
+	return await userController.updateOne(email, user_data=user_data)
 
-@router.route('/', methods=['GET'])
-def get_all():
-	return userController.getAll()
+@router.get('/')
+async def get_all():
+	return await userController.getAll()
 
-@router.route('/login', methods=['POST'])
-def login():
-	return userController.login()
+@router.post('/login')
+async def login(credentials: dict):
+	return await userController.login(credentials)
 
-@router.route('/register', methods=['POST'])
-def create():
-	return userController.create()
+@router.post('/register')
+async def create(user_data: user):
+	return await userController.create(user_data)
