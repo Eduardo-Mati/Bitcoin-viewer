@@ -6,7 +6,7 @@ from fastapi import HTTPException
 async def create(user_data: user):
     """Criar um novo usuário"""
     try:
-        result = await users_collection.insert_one(user_data.dict())
+        result = await users_collection.insert_one(user_data.model_dump())
         return {"email": user_data.email, "message": "Usuário criado com sucesso"}
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
@@ -34,7 +34,7 @@ async def updateOne(email: str, user_data: user):
     try:
         result = await users_collection.update_one(
             {"email": email},
-            {"$set": user_data.dict()}
+            {"$set": user_data.model_dump()}
         )
         if result.matched_count == 0:
             raise HTTPException(status_code=404, detail="Usuário não encontrado")
