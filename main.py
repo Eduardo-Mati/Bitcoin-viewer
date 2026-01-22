@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import userRouter
 from schemas import userSchema
-from database import close_mongo_connection
 
 
 app = FastAPI()
@@ -17,12 +16,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# Event handlers para conexão com MongoDB
-@app.on_event("shutdown")
-async def shutdown_db_client():
-    await close_mongo_connection()
 
 #para rodar o código use o comando: uvicorn main:app --reload
 
