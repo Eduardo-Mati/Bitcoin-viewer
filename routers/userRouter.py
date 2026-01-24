@@ -14,7 +14,7 @@ async def get_one(email: str):
 
 @router.put('/{email}')
 async def update_one(email: str, user_data: user):
-	return await userController.updateOne(email, user_data=user_data)
+	return await userController.updateOne(email, user_data)
 
 @router.get('/')
 async def get_all():
