@@ -3,6 +3,8 @@ from bson import ObjectId
 from schemas.userSchema import user
 from fastapi import HTTPException
 from passlib.context import CryptContext
+from services.authMIddleware import create_access_token
+from datetime import timedelta
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
@@ -87,16 +89,23 @@ async def deleteOne(email: str):
 async def login(credentials: dict):
     """Fazer login do usuário"""
     try:
-        user = await users_collection.find_one({"email": credentials.get("email")})
-        if not user:
+        user_data = await users_collection.find_one({"email": credentials.get("email")})
+        if not user_data:
             raise HTTPException(status_code=404, detail="Usuário não encontrado")
 
         # Verifica se a senha enviada confere com o hash armazenado
-        if not pwd_context.verify(credentials.get("password", ""), user.get("password", "")):
+        if not pwd_context.verify(credentials.get("password", ""), user_data.get("password", "")):
             raise HTTPException(status_code=401, detail="Credenciais inválidas")
         
+        # Cria o token JWT
+        access_token = create_access_token(
+            data={"sub": user_data.get("email")},
+            expires_delta=timedelta(hours=1)
+        )
+        
         return {
-            "email": user.get("email"),
+            "access_token": access_token,
+            "email": user_data.get("email"),
             "message": "Login realizado com sucesso"
         }
     except Exception as e:
