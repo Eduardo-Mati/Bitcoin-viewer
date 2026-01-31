@@ -31,9 +31,11 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     encoded_jwt = encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-# Função para verificar token JWT
-def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
-    """Verifica se o token JWT é válido"""
+def verify_token_optional(credentials: Optional[HTTPAuthorizationCredentials] = Depends(security)) -> Optional[str]:
+    """Verifica token JWT - retorna None se não houver token"""
+    if credentials is None:
+        return None
+    
     token = credentials.credentials
     
     try:
@@ -47,3 +49,19 @@ def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
     except InvalidTokenError:
         raise HTTPException(status_code=401, detail="Token inválido")
 
+
+# Função para verificar token obrigatório
+def verify_token_required(credentials: HTTPAuthorizationCredentials = Depends(security)) -> str:
+    """Verifica token JWT - retorna erro se não houver token"""
+    token = credentials.credentials
+    
+    try:
+        payload = decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return email
+    except ExpiredSignatureError:
+        raise HTTPException(status_code=401, detail="Token expirado")
+    except InvalidTokenError:
+        raise HTTPException(status_code=401, detail="Token inválido")
