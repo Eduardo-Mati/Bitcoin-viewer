@@ -1,0 +1,65 @@
+.section {
+  border-radius: 1.875rem;
+  border: 1px solid rgb(30, 41, 59);
+  background-color: rgba(15, 23, 42, 0.7);
+  padding: 1.5rem;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.label {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgb(148, 163, 184);
+}
+
+.title {
+  margin-top: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+}
+
+.badge {
+  border-radius: 9999px;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+  background-color: rgba(34, 197, 94, 0.1);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: rgb(187, 247, 208);
+}
+
+.chartContainer {
+  margin-top: 1.5rem;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  border: 1px solid rgb(30, 41, 59);
+  background-color: rgba(3, 7, 30, 0.6);
+  padding: 1rem;
+}
+
+.chartImage {
+  height: 18rem;
+  width: 100%;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.description {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: rgb(148, 163, 184);
+}

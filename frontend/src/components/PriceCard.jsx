@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import styles from "./PriceCard.module.css";
 
 const PRICE_URL = "http://localhost:8000/crypto/price";
 const REFRESH_INTERVAL = 30000;
@@ -51,32 +52,32 @@ export default function PriceCard({ coinId = "bitcoin", label }) {
   }, [coinId]);
 
   return (
-    <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-glow">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-slate-400">
+    <section className={styles.section}>
+      <div className={styles.header}>
+        <div className={styles.titleSection}>
+          <p className={styles.label}>
             Price
           </p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">
+          <h2 className={styles.title}>
             {displayLabel}
           </h2>
         </div>
-        <span className="rounded-full border border-blue-500/40 bg-blue-500/10 px-3 py-1 text-xs uppercase tracking-[0.25em] text-blue-200">
+        <span className={styles.badge}>
           Live
         </span>
       </div>
 
-      <div className="mt-6">
+      <div className={styles.content}>
         {status === "error" ? (
-          <p className="text-sm text-rose-300">
+          <p className={styles.errorMessage}>
             Unable to load price for {coinId}.
           </p>
         ) : (
-          <p className="text-4xl font-semibold text-white">
+          <p className={styles.priceValue}>
             {price !== null ? formatUSD.format(price) : "--"}
           </p>
         )}
-        <p className="mt-3 text-sm text-slate-400">
+        <p className={styles.description}>
           Updated every 30 seconds from your local backend.
         </p>
       </div>

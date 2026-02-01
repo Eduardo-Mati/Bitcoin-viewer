@@ -1,6 +1,7 @@
 import { NavLink, useParams } from "react-router-dom";
 import HistoricalChart from "../components/HistoricalChart";
 import PriceCard from "../components/PriceCard";
+import styles from "./Charts.module.css";
 
 const coins = [
   { id: "bitcoin", label: "Bitcoin (BTC)", tone: "from-amber-400 to-orange-500" },
@@ -13,30 +14,26 @@ export default function Charts() {
   const active = coins.find((coin) => coin.id === coinId) ?? coins[0];
 
   return (
-    <div className="flex w-full flex-col gap-6">
-      <header className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div className="space-y-2">
-          <p className="text-sm uppercase tracking-[0.3em] text-slate-400">
+    <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.titleSection}>
+          <p className={styles.label}>
             Charts
           </p>
-          <h1 className="text-3xl font-semibold text-white md:text-4xl">
+          <h1 className={styles.title}>
             Market history
           </h1>
-          <p className="text-slate-400">
+          <p className={styles.description}>
             Explore refreshed charts by coin with cache-busting updates.
           </p>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className={styles.buttonGroup}>
           {coins.map((coin) => (
             <NavLink
               key={coin.id}
               to={`/charts/${coin.id}`}
               className={({ isActive }) =>
-                `rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300 ${
-                  isActive
-                    ? `border-transparent bg-gradient-to-r ${coin.tone} text-slate-950 shadow-glow`
-                    : "border-slate-800 bg-slate-900/40 text-slate-300 hover:border-slate-600 hover:text-white"
-                }`
+                isActive ? `${styles.coinButton} ${styles.active} ${styles[coin.id]}` : `${styles.coinButton} ${styles.inactive}`
               }
             >
               {coin.label}
@@ -45,7 +42,7 @@ export default function Charts() {
         </div>
       </header>
 
-      <div className="grid gap-6 lg:grid-cols-[1.05fr_1.95fr]">
+      <div className={styles.grid}>
         <PriceCard coinId={active.id} label={active.label} />
         <HistoricalChart
           coinId={active.id}
