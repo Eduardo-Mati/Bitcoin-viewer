@@ -4,9 +4,9 @@ import PriceCard from "../components/PriceCard";
 import styles from "./Charts.module.css";
 
 const coins = [
-  { id: "bitcoin", label: "Bitcoin (BTC)", tone: "from-amber-400 to-orange-500" },
-  { id: "ethereum", label: "Ethereum (ETH)", tone: "from-indigo-400 to-purple-500" },
-  { id: "solana", label: "Solana (SOL)", tone: "from-emerald-400 to-teal-500" }
+  { id: "bitcoin", label: "Bitcoin (BTC)"},
+  { id: "ethereum", label: "Ethereum (ETH)"},
+  { id: "solana", label: "Solana (SOL)"}
 ];
 
 export default function Charts() {
