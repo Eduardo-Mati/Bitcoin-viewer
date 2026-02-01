@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import userRouter
 from schemas import userSchema
-
+from routers import cryptoRouter
 
 app = FastAPI()
 
@@ -18,8 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-#para rodar o código use o comando: uvicorn main:app --reload
+#para rodar o código use o comando: docker-compose up --build
 
-app.include_router(userRouter.router)
-
-
+app.include_router(userRouter.router, prefix="/api/user", tags=["user"])
+app.include_router(cryptoRouter.router, prefix="/crypto", tags=["crypto"])

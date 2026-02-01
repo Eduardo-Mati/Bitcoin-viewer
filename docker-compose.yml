@@ -1,0 +1,29 @@
+services:
+  backend:
+    build: .
+    ports:
+    - "8000:8000"
+    environment:
+    - MONGO_URL=mongodb://mongo_db:27017
+    depends_on:
+    - mongo_db
+  crypto_worker:
+      build: ./crypto_service  
+      environment:
+        - REDIS_HOST=redis_db
+      depends_on:
+        - redis_db
+  mongo_db:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+  
+  redis_db:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  mongo_data:

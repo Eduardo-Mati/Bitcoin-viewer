@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from controllers import userController
 from schemas.userSchema import user
 
-router = APIRouter(prefix="/api/user", tags=["user"])
+router = APIRouter()
 
 @router.delete('/{email}')
 async def delete_one(email: str):

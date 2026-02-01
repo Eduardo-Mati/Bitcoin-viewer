@@ -1,0 +1,16 @@
+# Usa o Python 3.11 (mesma versão que vi no seu log)
+FROM python:3.11-slim
+
+# Define a pasta de trabalho dentro do container
+WORKDIR /app
+
+# Copia as dependências e instala
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copia todo o seu código para dentro do container
+COPY . .
+
+# Libera a porta 8000 e roda o app
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
