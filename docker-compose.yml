@@ -1,6 +1,8 @@
 services:
   backend:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: dockerfile
     ports:
     - "8000:8000"
     environment:
@@ -8,7 +10,9 @@ services:
     depends_on:
     - mongo_db
   crypto_worker:
-      build: ./crypto_service  
+      build:
+        context: ./backend/crypto_service
+        dockerfile: dockerfile
       environment:
         - REDIS_HOST=redis_db
       depends_on:
