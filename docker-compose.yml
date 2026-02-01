@@ -7,8 +7,11 @@ services:
     - "8000:8000"
     environment:
     - MONGO_URL=mongodb://mongo_db:27017
+    - REDIS_HOST=redis_db
+    - SECRET=bitcoin_viewer_super_secret_key_2026
     depends_on:
     - mongo_db
+    - redis_db
   crypto_worker:
       build:
         context: ./backend/crypto_service

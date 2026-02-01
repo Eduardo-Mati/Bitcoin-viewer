@@ -3,41 +3,47 @@ import requests
 import redis
 import os
 
+# Configuração do Redis
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 client = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
 
-# Lista de moedas que queremos monitorar (IDs do CoinGecko)
+# As 3 moedas escolhidas (IDs exatos da CoinGecko)
 COINS = ["bitcoin", "ethereum", "solana"]
 
 def fetch_prices():
     try:
-        # Busca todas de uma vez separadas por vírgula
-        ids = ",".join(COINS)
-        url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids}&vs_currencies=usd"
+        # Transforma a lista em string: "bitcoin,ethereum,solana"
+        ids_string = ",".join(COINS)
+        
+        # Pede tudo de uma vez para economizar requisições
+        url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids_string}&vs_currencies=usd"
         
         response = requests.get(url, timeout=5)
-        data = response.json()
-        return data
+        response.raise_for_status()
+        return response.json()
     except Exception as e:
         print(f"❌ Erro na API: {e}")
         return None
 
-print(f"🤖 Robô INICIADO! Monitorando: {COINS}")
+print(f"🤖 Robô Iniciado! Monitorando: {COINS}")
 
 while True:
     data = fetch_prices()
     
     if data:
+        # Para cada moeda na nossa lista...
         for coin in COINS:
             if coin in data:
                 price = data[coin]['usd']
                 print(f"💰 {coin.upper()}: ${price}")
                 
-                # Salva com chaves dinâmicas: 'bitcoin_price', 'ethereum_price'...
+                # 1. Salva o preço atual: 'bitcoin_price', 'solana_price'...
                 client.set(f"{coin}_price", price)
                 
-                # Salva histórico específico para cada moeda
-                client.rpush(f"{coin}_history", price)
-                client.ltrim(f"{coin}_history", -50, -1)
+                # 2. Salva no histórico específico: 'bitcoin_history', 'solana_history'...
+                history_key = f"{coin}_history"
+                client.rpush(history_key, price)
+                client.ltrim(history_key, -50, -1) # Mantém só os últimos 50
     
+    # Espera 30 segundos
     time.sleep(30)

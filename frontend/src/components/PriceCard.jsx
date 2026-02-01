@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const PRICE_URL = "http://localhost:8000/crypto/price";
 const REFRESH_INTERVAL = 30000;
@@ -9,17 +9,23 @@ const formatUSD = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2
 });
 
-export default function PriceCard() {
+export default function PriceCard({ coinId = "bitcoin", label }) {
   const [price, setPrice] = useState(null);
   const [status, setStatus] = useState("loading");
 
+  const displayLabel = useMemo(
+    () => label ?? `${coinId.charAt(0).toUpperCase()}${coinId.slice(1)}`,
+    [coinId, label]
+  );
+
   useEffect(() => {
     let isMounted = true;
+    const url = `${PRICE_URL}/${coinId}`;
 
     const fetchPrice = async () => {
       try {
         setStatus((current) => (current === "ready" ? "ready" : "loading"));
-        const response = await fetch(PRICE_URL);
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error("Failed to fetch price");
         }
@@ -42,7 +48,7 @@ export default function PriceCard() {
       isMounted = false;
       clearInterval(intervalId);
     };
-  }, []);
+  }, [coinId]);
 
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-glow">
@@ -52,7 +58,7 @@ export default function PriceCard() {
             Price
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-white">
-            Bitcoin (BTC)
+            {displayLabel}
           </h2>
         </div>
         <span className="rounded-full border border-blue-500/40 bg-blue-500/10 px-3 py-1 text-xs uppercase tracking-[0.25em] text-blue-200">
@@ -62,7 +68,9 @@ export default function PriceCard() {
 
       <div className="mt-6">
         {status === "error" ? (
-          <p className="text-sm text-rose-300">Unable to load price.</p>
+          <p className="text-sm text-rose-300">
+            Unable to load price for {coinId}.
+          </p>
         ) : (
           <p className="text-4xl font-semibold text-white">
             {price !== null ? formatUSD.format(price) : "--"}

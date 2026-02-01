@@ -1,22 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const CHART_URL = "http://localhost:8000/crypto/chart";
 const REFRESH_INTERVAL = 30000;
 
-const buildChartUrl = () => `${CHART_URL}?t=${Date.now()}`;
+const buildChartUrl = (coinId) => `${CHART_URL}/${coinId}?t=${Date.now()}`;
 
-export default function HistoricalChart() {
-  const [chartSrc, setChartSrc] = useState(buildChartUrl());
+export default function HistoricalChart({ coinId = "bitcoin", title }) {
+  const displayTitle = useMemo(
+    () => title ?? `${coinId.charAt(0).toUpperCase()}${coinId.slice(1)} history`,
+    [coinId, title]
+  );
+
+  const [chartSrc, setChartSrc] = useState(() => buildChartUrl(coinId));
 
   useEffect(() => {
     const refreshChart = () => {
-      setChartSrc(buildChartUrl());
+      setChartSrc(buildChartUrl(coinId));
     };
 
+    refreshChart();
     const intervalId = setInterval(refreshChart, REFRESH_INTERVAL);
 
     return () => clearInterval(intervalId);
-  }, []);
+  }, [coinId]);
 
   return (
     <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-glow">
@@ -26,7 +32,7 @@ export default function HistoricalChart() {
             Historical chart
           </p>
           <h2 className="mt-2 text-2xl font-semibold text-white">
-            Last 24 hours
+            {displayTitle}
           </h2>
         </div>
         <span className="rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-xs uppercase tracking-[0.25em] text-emerald-200">
