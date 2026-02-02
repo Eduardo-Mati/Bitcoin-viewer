@@ -1,4 +1,16 @@
 services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+      args:
+        - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
   backend:
     build:
       context: ./backend
@@ -6,28 +18,34 @@ services:
     ports:
     - "7463:7463"
     environment:
-    - MONGO_URL=${MONGO_URL}
-    - REDIS_URL=redis://redis_db:6379
-    - SECRET=${SECRET}
-    - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - MONGO_URL=${MONGO_URL:-mongodb://mongo_db:27017}
+      - REDIS_URL=redis://redis_db:6379
+      - SECRET=${SECRET}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     depends_on:
-    - mongo_db
-    - redis_db
+      - mongo_db
+      - redis_db
+    restart: unless-stopped
+
   crypto_worker:
-      build:
-        context: ./backend/crypto_service
-        dockerfile: dockerfile
-      environment:
-        - REDIS_URL=redis://redis_db:6379
-      depends_on:
-        - redis_db
+    build:
+      context: ./backend/crypto_service
+      dockerfile: dockerfile
+    environment:
+      - REDIS_URL=redis://redis_db:6379
+    depends_on:
+      - redis_db
+    restart: unless-stopped
+
   mongo_db:
-    image: mongo:latest
+    image: mongo:7-alpine
     volumes:
       - mongo_data:/data/db
-  
+    restart: unless-stopped
+
   redis_db:
-    image: redis:alpine
+    image: redis:7-alpine
+    restart: unless-stopped
 
 volumes:
   mongo_data:
