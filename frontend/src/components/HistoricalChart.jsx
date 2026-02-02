@@ -13,6 +13,8 @@ export default function HistoricalChart({ coinId = "bitcoin", title }) {
   );
 
   const [chartSrc, setChartSrc] = useState(() => buildChartUrl(coinId));
+  const [analysis, setAnalysis] = useState("");
+  const [loadingAI, setLoadingAI] = useState(false);
 
   useEffect(() => {
     const refreshChart = () => {
@@ -24,6 +26,28 @@ export default function HistoricalChart({ coinId = "bitcoin", title }) {
 
     return () => clearInterval(intervalId);
   }, [coinId]);
+
+  useEffect(() => {
+    setAnalysis("");
+    setLoadingAI(false);
+  }, [coinId]);
+
+  const handleAskAI = async (coin) => {
+    setLoadingAI(true);
+    setAnalysis("Consultando o Gemini...");
+    try {
+      const response = await fetch(`http://localhost:8000/crypto/analyze/${coin}`);
+      if (!response.ok) {
+        throw new Error("Request failed");
+      }
+      const data = await response.json();
+      setAnalysis(data?.analysis ?? "Sem análise disponível.");
+    } catch (error) {
+      setAnalysis("Erro ao consultar IA.");
+    } finally {
+      setLoadingAI(false);
+    }
+  };
 
   return (
     <section className={styles.section}>
@@ -44,13 +68,28 @@ export default function HistoricalChart({ coinId = "bitcoin", title }) {
       <div className={styles.chartContainer}>
         <img
           src={chartSrc}
-          alt="Bitcoin price chart"
+          alt={`${displayTitle} price chart`}
           className={styles.chartImage}
         />
       </div>
       <p className={styles.description}>
         Chart updates every 30 seconds with cache busting.
       </p>
+
+      <button
+        type="button"
+        onClick={() => handleAskAI(coinId)}
+        className={styles.aiButton}
+        disabled={loadingAI}
+      >
+        {loadingAI ? "Analisando..." : "✨ Pedir Análise da IA"}
+      </button>
+
+      {analysis && (
+        <div className={styles.analysisBox}>
+          🤖 {analysis}
+        </div>
+      )}
     </section>
   );
 }

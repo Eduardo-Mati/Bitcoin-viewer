@@ -1,0 +1,49 @@
+# --- DEPENDÊNCIAS & SISTEMA ---
+# Node (Frontend) - Nunca suba isso, é gigante (milhares de arquivos)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python (Backend) - Arquivos compilados e cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ambiente Virtual Python (onde ficam as bibliotecas instaladas)
+.venv/
+venv/
+env/
+
+# --- ARQUIVOS DE BUILD (O que é gerado automaticamente) ---
+# Build do React/Vite
+dist/
+dist-ssr/
+coverage/
+
+# --- SEGURANÇA (CRÍTICO) ---
+# Arquivos de variáveis de ambiente com suas SENHAS e KEYS
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Chaves SSH ou certificados (caso tenha criado)
+*.pem
+*.key
+
+# --- DOCKER & DADOS LOCAIS ---
+# Se você mapeou volumes do banco de dados para pastas locais
+mongo_data/
+redis_data/
+postgres_data/
+
+# Logs de erro
+*.log
+
+# --- IDEs / EDITORES ---
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db

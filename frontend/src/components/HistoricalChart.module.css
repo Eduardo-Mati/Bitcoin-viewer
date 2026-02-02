@@ -63,3 +63,40 @@
   font-size: 0.875rem;
   color: rgb(148, 163, 184);
 }
+
+.aiButton {
+  margin-top: 1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 0.75rem;
+  border: none;
+  background-color: rgb(126, 34, 206);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.aiButton:hover {
+  background-color: rgb(107, 33, 168);
+}
+
+.aiButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.analysisBox {
+  margin-top: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  background-color: rgb(51, 65, 85);
+  padding: 0.75rem;
+  font-size: 0.875rem;
+  color: rgb(226, 232, 240);
+}

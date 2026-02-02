@@ -6,9 +6,10 @@ services:
     ports:
     - "8000:8000"
     environment:
-    - MONGO_URL=mongodb://mongo_db:27017
+    - MONGO_URL=${MONGO_URL}
     - REDIS_HOST=redis_db
     - SECRET=bitcoin_viewer_super_secret_key_2026
+    - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     depends_on:
     - mongo_db
     - redis_db
