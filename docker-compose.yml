@@ -38,13 +38,13 @@ services:
     restart: unless-stopped
 
   mongo_db:
-    image: mongo:7.0-alpine
+    image: mongo:7.0
     volumes:
       - mongo_data:/data/db
     restart: unless-stopped
 
   redis_db:
-    image: redis:7.0-alpine
+    image: redis:7.0
     restart: unless-stopped
 
 volumes:
