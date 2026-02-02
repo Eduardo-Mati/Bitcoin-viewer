@@ -2,13 +2,14 @@ from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 import redis
 import os
-import matplotlib.pyplot as plt
 import io
 import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 from services.aiAnalyst import analyze_market_trend
 
-# Configuração para rodar sem monitor (headless)
-matplotlib.use('Agg')
+
+
 
 router = APIRouter()
 
