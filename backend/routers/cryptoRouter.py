@@ -5,6 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import io
 import matplotlib
+from services.aiAnalyst import analyze_market_trend
 
 # Configuração para rodar sem monitor (headless)
 matplotlib.use('Agg')
@@ -59,3 +60,24 @@ def get_chart(coin_id: str):
     plt.close()
 
     return StreamingResponse(buf, media_type="image/png")
+
+@router.get("/analyze/{coin_id}")
+def get_ai_analysis(coin_id: str):
+    # Pega os dados do Redis
+    key = f"{coin_id}_history"
+    prices_str = redis_client.lrange(key, 0, -1)
+    
+    if not prices_str:
+        return {"analysis": "Dados insuficientes."}
+    
+    # Pega os últimos 30 preços
+    prices = [float(p) for p in prices_str][-30:]
+    
+    # Chama o Gemini Grátis
+    analysis_text = analyze_market_trend(coin_id, prices)
+    
+    return {
+        "coin": coin_id, 
+        "analysis": analysis_text,
+        "source": "Google Gemini (Free Tier)"
+    }
