@@ -4,10 +4,10 @@ services:
       context: ./backend
       dockerfile: dockerfile
     ports:
-    - "8000:8000"
+    - "7463:7463"
     environment:
     - MONGO_URL=${MONGO_URL}
-    - REDIS_HOST=redis_db
+    - REDIS_URL=redis://redis_db:6379
     - SECRET=${SECRET}
     - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     depends_on:
@@ -18,7 +18,7 @@ services:
         context: ./backend/crypto_service
         dockerfile: dockerfile
       environment:
-        - REDIS_HOST=redis_db
+        - REDIS_URL=redis://redis_db:6379
       depends_on:
         - redis_db
   mongo_db:

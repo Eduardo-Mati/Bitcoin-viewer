@@ -4,8 +4,8 @@ import redis
 import os
 
 # Configuração do Redis
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-client = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+client = redis.from_url(REDIS_URL, decode_responses=True)
 
 # As 3 moedas escolhidas (IDs exatos da CoinGecko)
 COINS = ["bitcoin", "ethereum", "solana"]

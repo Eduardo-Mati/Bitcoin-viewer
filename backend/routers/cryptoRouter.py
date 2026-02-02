@@ -13,8 +13,8 @@ from services.aiAnalyst import analyze_market_trend
 
 router = APIRouter()
 
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-redis_client = redis.Redis(host=REDIS_HOST, port=6379, decode_responses=True)
+REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+redis_client = redis.from_url(REDIS_URL, decode_responses=True)
 
 # ROTA DE PREÇO: Aceita /crypto/price/bitcoin ou /crypto/price/solana
 @router.get("/price/{coin_id}")
