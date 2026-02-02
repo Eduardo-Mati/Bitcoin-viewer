@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./HistoricalChart.module.css";
+import api from "../services/api";
 
-const CHART_URL = "http://localhost:8000/crypto/chart";
+const CHART_URL = `${api.baseUrl}/crypto/chart`;
 const REFRESH_INTERVAL = 30000;
 
 const buildChartUrl = (coinId) => `${CHART_URL}/${coinId}?t=${Date.now()}`;
@@ -36,7 +37,7 @@ export default function HistoricalChart({ coinId = "bitcoin", title }) {
     setLoadingAI(true);
     setAnalysis("Consultando o Gemini...");
     try {
-      const response = await fetch(`http://localhost:8000/crypto/analyze/${coin}`);
+      const response = await fetch(`${api.baseUrl}/crypto/analyze/${coin}`);
       if (!response.ok) {
         throw new Error("Request failed");
       }

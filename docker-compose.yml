@@ -1,15 +1,16 @@
+
 services:
   frontend:
     build:
       context: ./frontend
       dockerfile: dockerfile
-      args:
-        - VITE_API_URL=${VITE_API_URL:-http://localhost:8000}
     ports:
       - "5173:80"
     depends_on:
       - backend
     restart: unless-stopped
+    networks:
+      - bitcoin-network
 
   backend:
     build:
@@ -18,34 +19,52 @@ services:
     ports:
     - "7463:7463"
     environment:
-      - MONGO_URL=${MONGO_URL:-mongodb://mongo_db:27017}
-      - REDIS_URL=redis://redis_db:6379
+      - MONGO_URL=${MONGO_URL}
+      - REDIS_HOST=redis_db
+      - REDIS_PORT=6379
       - SECRET=${SECRET}
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     depends_on:
       - mongo_db
       - redis_db
     restart: unless-stopped
+    networks:
+      - bitcoin-network
 
   crypto_worker:
     build:
       context: ./backend/crypto_service
       dockerfile: dockerfile
     environment:
-      - REDIS_URL=redis://redis_db:6379
+      - REDIS_HOST=redis_db
+      - REDIS_PORT=6379
+      - MONGO_URL=${MONGO_URL}
     depends_on:
       - redis_db
+      - mongo_db
     restart: unless-stopped
+    networks:
+      - bitcoin-network
 
   mongo_db:
-    image: mongo:7.0
+    image: mongo:8.0
+    ports:
+      - "27017:27017"  # Expõe para acesso externo (opcional)
     volumes:
       - mongo_data:/data/db
     restart: unless-stopped
+    networks:
+      - bitcoin-network
 
   redis_db:
-    image: redis:7.0
+    image: redis:7-alpine
     restart: unless-stopped
+    networks:
+      - bitcoin-network
 
 volumes:
   mongo_data:
+
+networks:
+  bitcoin-network:
+    driver: bridge

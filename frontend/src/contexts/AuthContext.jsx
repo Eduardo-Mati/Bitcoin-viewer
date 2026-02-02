@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useMemo } from "react";
+import api from "../services/api";
 
 const AuthContext = createContext(null);
 
@@ -34,11 +35,7 @@ export function AuthProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("http://localhost:8000/api/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
+      const res = await api.post("/api/user/login", { email, password });
 
       const data = await res.json();
       
@@ -65,11 +62,7 @@ export function AuthProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("http://localhost:8000/api/user/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password })
-      });
+      const res = await api.post("/api/user/register", { name, email, password });
 
       const data = await res.json();
 

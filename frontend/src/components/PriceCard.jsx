@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./PriceCard.module.css";
+import api from "../services/api";
 
-const PRICE_URL = "http://localhost:8000/crypto/price";
+const PRICE_URL = `${api.baseUrl}/crypto/price`;
 const REFRESH_INTERVAL = 30000;
 
 const formatUSD = new Intl.NumberFormat("en-US", {
