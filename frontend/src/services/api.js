@@ -1,11 +1,11 @@
-const API_BASE_URL = import.meta.env.VITE_API_URL || "http://34.73.23.226:7463";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:7463";
 
 export const api = {
   baseUrl: API_BASE_URL,
 
   async request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
-    
+
     const config = {
       headers: {
         "Content-Type": "application/json",

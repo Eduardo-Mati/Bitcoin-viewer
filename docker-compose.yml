@@ -56,7 +56,7 @@ services:
   mongo_db:
     image: mongo:8.0
     ports:
-      - "27017:27017" # Expõe para acesso externo (opcional)
+      - "27017:27017" 
     volumes:
       - mongo_data:/data/db
     restart: unless-stopped
