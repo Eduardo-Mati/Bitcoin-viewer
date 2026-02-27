@@ -1,0 +1,124 @@
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 1.5rem;
+  border: 1px solid rgb(30, 41, 59);
+  background-color: rgba(15, 23, 42, 0.6);
+  padding: 1rem;
+  backdrop-filter: blur(1px);
+}
+
+@media (min-width: 1024px) {
+  .nav {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.logoBadge {
+  display: flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background: linear-gradient(to bottom right, rgb(251, 146, 60), rgb(234, 88, 12), rgb(244, 63, 94));
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: rgb(3, 7, 30);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoSubtext {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: rgb(148, 163, 184);
+}
+
+.logoTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+}
+
+.navLinks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.navLinkBase {
+  border-radius: 9999px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.navLinkActive {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.8), rgba(99, 102, 241, 0.8), rgba(168, 85, 247, 0.8));
+  color: white;
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.25);
+}
+
+.navLinkIdle {
+  border: 1px solid rgb(30, 41, 59);
+  background-color: rgba(15, 23, 42, 0.4);
+  color: rgb(148, 163, 184);
+}
+
+.navLinkIdle:hover {
+  border-color: rgb(51, 65, 85);
+  color: white;
+}
+
+.userSection {
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-left: 1px solid rgb(55, 65, 81);
+  padding-left: 1rem;
+}
+
+.userEmail {
+  font-size: 0.875rem;
+  color: rgb(148, 163, 184);
+}
+
+.logoutButton {
+  border-radius: 9999px;
+  border: 1px solid rgba(244, 63, 94, 0.4);
+  background-color: rgba(244, 63, 94, 0.1);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgb(252, 165, 165);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background-color: rgba(244, 63, 94, 0.2);
+}

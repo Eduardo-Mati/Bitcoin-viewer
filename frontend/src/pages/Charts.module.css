@@ -1,0 +1,91 @@
+.container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .header {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.subtext {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: rgb(148, 163, 184);
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 600;
+  color: white;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 2.25rem;
+  }
+}
+
+.description {
+  color: rgb(148, 163, 184);
+}
+
+.coinButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.coinButton {
+  border-radius: 9999px;
+  border: 1px solid rgb(30, 41, 59);
+  background-color: rgba(15, 23, 42, 0.4);
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: rgb(203, 213, 225);
+  text-decoration: none;
+  transition: all 0.3s;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.coinButton:hover {
+  border-color: rgb(51, 65, 85);
+  color: white;
+}
+
+.coinButtonActive {
+  border: 1px solid transparent;
+  color: rgb(3, 7, 30);
+  box-shadow: 0 0 30px rgba(251, 146, 60, 0.25);
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1.05fr 1.95fr;
+  }
+}
