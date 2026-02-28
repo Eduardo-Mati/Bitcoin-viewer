@@ -8,6 +8,10 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)
 
 > Um dashboard financeiro *Full-Stack* de alta performance que monitora criptomoedas em tempo real, gera gráficos históricos no backend e utiliza **Inteligência Artificial Generativa (Google Gemini)** para fornecer análises de mercado instantâneas.
+---
+🔗 Acesse o projeto online:
+
+https://bitcoin-viewer.vercel.app/
 
 ---
 
@@ -73,3 +77,4 @@ Siga os passos abaixo para subir a arquitetura completa na sua máquina:
 git clone [https://github.com/SEU_USUARIO/bitcoin-viewer.git](https://github.com/SEU_USUARIO/bitcoin-viewer.git)
 cd bitcoin-viewer
 #
+
