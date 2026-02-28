@@ -10,11 +10,10 @@ def _sanitize_user(user_data: dict) -> dict:
 
 async def create(user_data: CreateUser):
     """Criar um novo usuário"""
-
-    if await users_collection.find_one({"email": user_data.email}):
-        raise HTTPException(status_code=400, detail="Email já cadastrado")
-
     try:
+        if await users_collection.find_one({"email": user_data.email}):
+            raise HTTPException(status_code=400, detail="Email já cadastrado")
+
         await users_collection.insert_one(
             {
                 "name": user_data.name,
