@@ -2,7 +2,13 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 
 # URL de conexão do MongoDB
-MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+MONGO_URL = (
+    os.getenv("MONGO_URL")
+    or os.getenv("MONGO_URI")
+    or os.getenv("MONGODB_URL")
+    or os.getenv("MONGODB_URI")
+    or "mongodb://localhost:27017"
+)
 DATABASE_NAME = "bitcoin"
 
 # Cliente do MongoDB
