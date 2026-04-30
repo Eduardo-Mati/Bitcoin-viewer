@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://bitcoin-viewer.onrender.com";
+const API_BASE_URL = import.meta.env.VITE_API_URL || "https://bitcoin-viewer.onrender.com";
 
 export const api = {
   baseUrl: API_BASE_URL,
