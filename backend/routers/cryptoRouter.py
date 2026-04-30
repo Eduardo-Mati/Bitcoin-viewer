@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,Request
 from fastapi.responses import StreamingResponse
 import os
 import io
@@ -8,6 +8,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from services.aiAnalyst import analyze_market_trend
 from services.cache import build_cache_key, cache_get_json, cache_set_json
+
+from services.rateLimiter import limiter
 
 
 
@@ -37,7 +39,8 @@ def _load_history(coin_id: str):
 
 # ROTA DE PREÇO: Aceita /crypto/price/bitcoin ou /crypto/price/solana
 @router.get("/price/{coin_id}")
-def get_price(coin_id: str):
+@limiter.limit("30/minute")
+def get_price(request: Request, coin_id: str):
     coin_id = coin_id.lower()
     price_cache_key = build_cache_key("price", coin_id)
 
@@ -67,7 +70,8 @@ def get_price(coin_id: str):
 
 # ROTA DE GRÁFICO: Aceita /crypto/chart/ethereum
 @router.get("/chart/{coin_id}")
-def get_chart(coin_id: str):
+@limiter.limit("10/minute")
+def get_chart(request: Request, coin_id: str):
     coin_id = coin_id.lower()
     prices = _load_history(coin_id)
 
@@ -93,7 +97,8 @@ def get_chart(coin_id: str):
     return StreamingResponse(buf, media_type="image/png")
 
 @router.get("/analyze/{coin_id}")
-def get_ai_analysis(coin_id: str):
+@limiter.limit("5/minute")
+def get_ai_analysis(request: Request, coin_id: str):
     coin_id = coin_id.lower()
     prices = _load_history(coin_id)
 
