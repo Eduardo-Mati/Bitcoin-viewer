@@ -24,9 +24,8 @@ async def create(user_data: CreateUser):
         return {"message": "Usuário criado com sucesso"}
     except HTTPException:
         raise
-    except Exception as e:
-        print(f"ERRO CRITICO NO REGISTRO: {e}")
-        raise HTTPException(status_code=500, detail=f"Erro ao criar usuário: {str(e)}")
+    except Exception:
+        raise HTTPException(status_code=500, detail="Erro ao criar usuário")
 
 async def getAll():
     """Obter todos os usuários"""
